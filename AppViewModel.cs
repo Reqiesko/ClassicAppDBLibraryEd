@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
@@ -47,7 +48,18 @@ namespace Lab4
                       {
                           Book book = bookWindow.Book;
                           db.Books.Add(book);
-                          db.SaveChanges();
+                          try
+                          {
+                              db.SaveChanges();
+                          }
+                          catch
+                          {
+                              db.Books.Remove(book);
+                              MessageBox.Show("Заполните все поля!",
+                                "Ошибка!",
+                                MessageBoxButton.OK);
+                              
+                          }
                       }
                   }));
             }
@@ -70,18 +82,25 @@ namespace Lab4
                           Title = book.Title
                       };
                       BookWindow bookWindow = new BookWindow(vm);
- 
- 
                       if (bookWindow.ShowDialog() == true)
                       {
                           book = db.Books.Find(bookWindow.Book.Id);
                           if (book != null)
                           {
-                              book.Author = bookWindow.Book.Author;
-                              book.Title = bookWindow.Book.Title;
-                              book.Year = bookWindow.Book.Year;
-                              db.Entry(book).State = EntityState.Modified;
-                              db.SaveChanges();
+                              if (!string.IsNullOrEmpty(bookWindow.Book.Author) && !string.IsNullOrEmpty(bookWindow.Book.Title))
+                              {
+                                  book.Author = bookWindow.Book.Author;
+                                  book.Title = bookWindow.Book.Title;
+                                  book.Year = bookWindow.Book.Year;
+                                  db.Entry(book).State = EntityState.Modified;
+                                  db.SaveChanges();
+                              }
+                              else
+                              {
+                                  MessageBox.Show("Заполните все поля!",
+                                      "Ошибка!",
+                                      MessageBoxButton.OK);
+                              }
                           }
                       }
                   }));
@@ -114,7 +133,7 @@ namespace Lab4
                         {
                             if (saveFileDialog.ShowDialog() == true)
                             {
-                                StreamWriter sr = new StreamWriter(saveFileDialog.FileName + ".txt");
+                                StreamWriter sr = new StreamWriter(saveFileDialog.FileName);
                                 foreach (var book in db.Books.Local.ToBindingList())
                                 {
                                     sr.WriteLine(book.Id + " " + book.Author + " " + book.Title + " " + book.Year);
