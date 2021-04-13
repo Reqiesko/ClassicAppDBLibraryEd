@@ -120,7 +120,31 @@ namespace Lab4
                   }));
             }
         }
-
+        public RelayCommand ShowHelp
+        {
+            get
+            {
+                return showHelp ??
+                    (showHelp = new RelayCommand(obj =>
+                    {
+                        MessageBox.Show(
+                            "Автор: Нерадовский Артемий, 494 группа. \nПрограмма позволяет добавлять новые и редактировать существующие записи книг в библиотеке СПбГТУ.",
+                            "About Programm",
+                            MessageBoxButton.OK);
+                    }));
+            }
+        }
+        public RelayCommand Exit
+        {
+            get
+            {
+                return exit ??
+                    (exit = new RelayCommand(obj =>
+                    {
+                        Application.Current.Shutdown();
+                    }));
+            }
+        }
         public RelayCommand SaveDb
         {
             get

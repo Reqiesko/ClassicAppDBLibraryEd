@@ -15,11 +15,11 @@
             Grid.ColumnSpan="2"
             Height="20"
             VerticalAlignment="Top">
-            <MenuItem Header="File">
+            <MenuItem Header="Файл">
                 <MenuItem Command="{Binding SaveDb}" Header="Сохранить в файл" />
             </MenuItem>
-            <!--<MenuItem Click="ShowHelp" Header="Information" />
-            <MenuItem Click="Exit" Header="Exit" />-->
+            <MenuItem Command="{Binding ShowHelp}" Header="О программе" />
+            <MenuItem Command="{Binding Exit}" Header="Выход" />
         </Menu>
         <!--<ListBox x:Name="booksList" ItemsSource="{Binding Books}">
             <ListBox.ItemTemplate>
